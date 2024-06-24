@@ -1,11 +1,6 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Programation on OH! THO</title><link>https://www.nktho.fr/categories/programation/</link><description>Recent content in Programation on OH! THO</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 28 Jul 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://www.nktho.fr/categories/programation/index.xml" rel="self" type="application/rss+xml"/><item><title>PGN (Portable Game Notation) Parser</title><link>https://www.nktho.fr/p/programation/</link><pubDate>Fri, 28 Jul 2023 00:00:00 +0000</pubDate><guid>https://www.nktho.fr/p/programation/</guid><description>&lt;img src="https://www.nktho.fr/p/programation/eifel.jpeg" alt="Featured image of post PGN (Portable Game Notation) Parser" />&lt;pre>&lt;code>&amp;lt;h1&amp;gt;PGN Parser Description&amp;lt;/h1&amp;gt;
-&amp;lt;p&amp;gt;This parser supports the PGN format based on: &amp;lt;a href=&amp;quot;https://en.wikipedia.org/wiki/Portable_Game_Notation&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;https://en.wikipedia.org/wiki/Portable_Game_Notation&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;
-&amp;lt;p&amp;gt;The movetext is based on SAN (Standard Algebraic Notation).&amp;lt;/p&amp;gt;
-&amp;lt;p&amp;gt;Disambiguation is supported by checking VerifyIfKingBeingCheck before accepting a move.&amp;lt;/p&amp;gt;
-&amp;lt;p&amp;gt;PGN file format error detection.&amp;lt;/p&amp;gt;
-&amp;lt;p&amp;gt;Output format:&amp;lt;/p&amp;gt;
-&amp;lt;p&amp;gt;The state of the board at the end of the game, in the form of an 8x8 grid.&amp;lt;/p&amp;gt;
-&amp;lt;h2&amp;gt;Initial State&amp;lt;/h2&amp;gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Programation on OH! THO</title><link>https://www.nktho.fr/categories/programation/</link><description>Recent content in Programation on OH! THO</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 28 Jul 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://www.nktho.fr/categories/programation/index.xml" rel="self" type="application/rss+xml"/><item><title>PGN (Portable Game Notation) Parser</title><link>https://www.nktho.fr/p/programation/</link><pubDate>Fri, 28 Jul 2023 00:00:00 +0000</pubDate><guid>https://www.nktho.fr/p/programation/</guid><description>&lt;img src="https://www.nktho.fr/p/programation/eifel.jpeg" alt="Featured image of post PGN (Portable Game Notation) Parser" />&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;pre>&lt;code>&amp;lt;h2&amp;gt;Initial State&amp;lt;/h2&amp;gt;
 &amp;lt;pre class=&amp;quot;chess-board&amp;quot;&amp;gt;
 &lt;/code>&lt;/pre>
 &lt;p>bR|bN|bB|bQ|bK|bB|bN|bR
@@ -79,4 +74,5 @@ wR| |wB|wQ| |wB| |wR
 &lt;pre>&lt;code>&amp;lt;h2&amp;gt;Technical Implementation&amp;lt;/h2&amp;gt;
 &amp;lt;p&amp;gt;Runtime polymorphism in class &amp;lt;code&amp;gt;Move&amp;lt;/code&amp;gt;;&amp;lt;/p&amp;gt;
 &amp;lt;p&amp;gt;Dispatch using &amp;lt;code&amp;gt;std::variant&amp;lt;/code&amp;gt;, &amp;lt;code&amp;gt;std::visit&amp;lt;/code&amp;gt;, and CRTP (Curiously Recurring Template Pattern) in &amp;lt;code&amp;gt;template &amp;amp;lt;typename ConcretePiece&amp;amp;gt; class BasePiece&amp;lt;/code&amp;gt;;&amp;lt;/p&amp;gt;
-&lt;/code>&lt;/pre></description></item></channel></rss>
+&lt;/code>&lt;/pre>
+&lt;!-- raw HTML omitted --></description></item></channel></rss>
