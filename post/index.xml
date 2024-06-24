@@ -1,97 +1,94 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on OH! THO</title><link>https://www.nktho.fr/post/</link><description>Recent content in Posts on OH! THO</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Mon, 11 Mar 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://www.nktho.fr/post/index.xml" rel="self" type="application/rss+xml"/><item><title/><link>https://www.nktho.fr/p/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.nktho.fr/p/</guid><description>&lt;p>title: PGN (Portable Game Notation) Parser
-description: C++ programming
-date: 2023-07-28
-slug: Programation
-image: eifel.jpeg
-categories:&lt;/p>
-&lt;ul>
-&lt;li>Programation&lt;/li>
-&lt;/ul>
-&lt;p>content:&lt;/p>
-&lt;ul>
-&lt;li>
-&lt;p>type: paragraph
-text: &amp;gt;
-This parser supports the PGN format based on:
-&lt;a class="link" href="https://en.wikipedia.org/wiki/Portable_Game_Notation" target="_blank" rel="noopener"
->Portable Game Notation&lt;/a>.&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>type: paragraph
-text: &amp;gt;
-The movetext is based on SAN (Standard Algebraic Notation).
-Disambiguation is supported by checking VerifyIfKingBeingCheck before accepting a move.
-PGN file format error detection.&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>type: paragraph
-text: &amp;gt;
-Output format:
-The state of the board at the end of the game, in the form of an 8x8 grid.&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>type: code
-language: plaintext
-code: |
-bR|bN|bB|bQ|bK|bB|bN|bR
-bP|bP|bP|bP|bP|bP|bP|bP
-| | | | | | |&lt;br>
-| | | | | | |&lt;br>
-| | | | | | |&lt;br>
-| | | | | | |&lt;br>
-wP|wP|wP|wP|wP|wP|wP|wP
-wR|wN|wB|wQ|wK|wB|wN|wR&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>type: heading
-level: 2
-text: Input&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>type: code
-language: plaintext
-code: |&lt;/p>
-&lt;ol>
-&lt;li>e4 e6&lt;/li>
-&lt;li>e5 f6&lt;/li>
-&lt;li>exf6 gxf6&lt;/li>
-&lt;li>Ke2 h6&lt;/li>
-&lt;li>Ke3 h5&lt;/li>
-&lt;li>Ke4 e5&lt;/li>
-&lt;li>Nh3 d6&lt;/li>
-&lt;li>Ng5 Be6&lt;/li>
-&lt;li>Nf3 Bh3&lt;/li>
-&lt;li>Nc3 Bxg2&lt;/li>
-&lt;li>Na4 b6&lt;/li>
-&lt;li>Nc5 b5&lt;/li>
-&lt;li>Nd3 b4&lt;/li>
-&lt;li>Nxe5 b3
-1/2-1/2&lt;/li>
-&lt;/ol>
-&lt;/li>
-&lt;li>
-&lt;p>type: heading
-level: 2
-text: Output&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>type: code
-language: plaintext
-code: |
-bR|bN| |bQ|bK|bB|bN|bR
-bP| |bP| | | | |&lt;br>
-| | |bP| |bP| |&lt;br>
-| | | |wN| | |bP
-| | | |wK| | |&lt;br>
-|bP| | | |wN| |&lt;br>
-wP|wP|wP|wP| |wP|bB|wP
-wR| |wB|wQ| |wB| |wR&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>type: paragraph
-text: &amp;gt;
-Runtime polymorphism in class Move;
-Dispatch using std::variant, std::visit and CRTP (Curiously Recurring Template Pattern) in
-template &lt;!-- raw HTML omitted --> class BasePiece;&lt;/p>
-&lt;/li>
-&lt;/ul></description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on OH! THO</title><link>https://www.nktho.fr/post/</link><description>Recent content in Posts on OH! THO</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 28 Jul 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://www.nktho.fr/post/index.xml" rel="self" type="application/rss+xml"/><item><title>PGN (Portable Game Notation) Parser</title><link>https://www.nktho.fr/p/programation/</link><pubDate>Fri, 28 Jul 2023 00:00:00 +0000</pubDate><guid>https://www.nktho.fr/p/programation/</guid><description>&lt;img src="https://www.nktho.fr/p/programation/eifel.jpeg" alt="Featured image of post PGN (Portable Game Notation) Parser" />&lt;h3 id="overview">Overview&lt;/h3>
+&lt;p>This parser supports the PGN format based on &lt;a class="link" href="https://en.wikipedia.org/wiki/Portable_Game_Notation" target="_blank" rel="noopener"
+>Portable Game Notation&lt;/a>. The movetext is based on SAN (Standard Algebraic Notation). Disambiguation is supported by checking VerifyIfKingBeingCheck before accepting a move. PGN file format error detection.&lt;/p>
+&lt;h3 id="output-format">Output Format&lt;/h3>
+&lt;p>The state of the board at the end of the game, in the form of an 8x8 grid:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-plaintext" data-lang="plaintext">&lt;span class="line">&lt;span class="cl">bR|bN|bB|bQ|bK|bB|bN|bR
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bP|bP|bP|bP|bP|bP|bP|bP
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> | | | | | | |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> | | | | | | |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> | | | | | | |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> | | | | | | |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wP|wP|wP|wP|wP|wP|wP|wP
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wR|wN|wB|wQ|wK|wB|wN|wR
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Input
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">```plaintext
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">1. e4 e6
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">2. e5 f6
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">3. exf6 gxf6
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">4. Ke2 h6
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">5. Ke3 h5
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">6. Ke4 e5
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7. Nh3 d6
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">8. Ng5 Be6
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">9. Nf3 Bh3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">10. Nc3 Bxg2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">11. Na4 b6
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">12. Nc5 b5
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">13. Nd3 b4
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">14. Nxe5 b3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">1/2-1/2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">```plaintext
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bR|bN| |bQ|bK|bB|bN|bR
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bP| |bP| | | | |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> | | |bP| |bP| |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> | | | |wN| | |bP
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> | | | |wK| | |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> |bP| | | |wN| |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wP|wP|wP|wP| |wP|bB|wP
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wR| |wB|wQ| |wB| |wR
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Runtime Polymorphism
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Runtime polymorphism in class Move. Dispatch using std::variant, std::visit, and CRTP (Curiously Recurring Template Pattern) in template &amp;lt;typename ConcretePiece&amp;gt; class BasePiece;.
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div></description></item></channel></rss>
