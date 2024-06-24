@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>OH! THO</title><link>https://www.nktho.fr/</link><description>Recent content on OH! THO</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 28 Jul 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://www.nktho.fr/index.xml" rel="self" type="application/rss+xml"/><item><title>About</title><link>https://www.nktho.fr/about/</link><pubDate>Fri, 28 Jul 2023 00:00:00 +0000</pubDate><guid>https://www.nktho.fr/about/</guid><description>&lt;p>Who am I?
-My name is Tho, and I am a Software Engineer at Société Général.&lt;/p></description></item><item><title>PGN (Portable Game Notation) Parser</title><link>https://www.nktho.fr/p/programation/</link><pubDate>Fri, 28 Jul 2023 00:00:00 +0000</pubDate><guid>https://www.nktho.fr/p/programation/</guid><description>&lt;img src="https://www.nktho.fr/p/programation/eifel.jpeg" alt="Featured image of post PGN (Portable Game Notation) Parser" />&lt;h3 id="overview">Overview&lt;/h3>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>OH! THO</title><link>https://www.nktho.fr/</link><description>Recent content on OH! THO</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sat, 22 Jun 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://www.nktho.fr/index.xml" rel="self" type="application/rss+xml"/><item><title>PGN Parser</title><link>https://www.nktho.fr/p/programmation/</link><pubDate>Sat, 22 Jun 2024 00:00:00 +0000</pubDate><guid>https://www.nktho.fr/p/programmation/</guid><description>&lt;img src="https://www.nktho.fr/p/programmation/eifel.jpeg" alt="Featured image of post PGN Parser" />&lt;h3 id="overview">Overview&lt;/h3>
 &lt;p>This parser supports the PGN format based on &lt;a class="link" href="https://en.wikipedia.org/wiki/Portable_Game_Notation" target="_blank" rel="noopener"
 >Portable Game Notation&lt;/a>. The movetext is based on SAN (Standard Algebraic Notation). Disambiguation is supported by checking &lt;code>VerifyIfKingBeingCheck&lt;/code> before accepting a move.&lt;/p>
 &lt;p>It requires:&lt;/p>
@@ -34,38 +33,10 @@ My name is Tho, and I am a Software Engineer at Société Général.&lt;/p></des
 &lt;/div>&lt;h4 id="input">Input&lt;/h4>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
-&lt;/span>&lt;span class="lnt"> 2
-&lt;/span>&lt;span class="lnt"> 3
-&lt;/span>&lt;span class="lnt"> 4
-&lt;/span>&lt;span class="lnt"> 5
-&lt;/span>&lt;span class="lnt"> 6
-&lt;/span>&lt;span class="lnt"> 7
-&lt;/span>&lt;span class="lnt"> 8
-&lt;/span>&lt;span class="lnt"> 9
-&lt;/span>&lt;span class="lnt">10
-&lt;/span>&lt;span class="lnt">11
-&lt;/span>&lt;span class="lnt">12
-&lt;/span>&lt;span class="lnt">13
-&lt;/span>&lt;span class="lnt">14
-&lt;/span>&lt;span class="lnt">15
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
 &lt;/span>&lt;/code>&lt;/pre>&lt;/td>
 &lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-plaintext" data-lang="plaintext">&lt;span class="line">&lt;span class="cl">1. e4 e6
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">2. e5 f6
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">3. exf6 gxf6
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">4. Ke2 h6
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">5. Ke3 h5
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">6. Ke4 e5
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7. Nh3 d6
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">8. Ng5 Be6
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">9. Nf3 Bh3
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">10. Nc3 Bxg2
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">11. Na4 b6
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">12. Nc5 b5
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">13. Nd3 b4
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">14. Nxe5 b3
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">1/2-1/2
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-plaintext" data-lang="plaintext">&lt;span class="line">&lt;span class="cl">1. e4 e6 2. e5 f6 3. exf6 gxf6 4. Ke2 h6 5. Ke3 h5 6. Ke4 e5 7. Nh3 d6 8. Ng5 Be6 9. Nf3 Bh3 10. Nc3 Bxg2 11. Na4 b6 12. Nc5 b5 13. Nd3 b4 14. Nxe5 b3 1/2-1/2
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
 &lt;/div>&lt;h4 id="output">Output&lt;/h4>
@@ -99,5 +70,6 @@ My name is Tho, and I am a Software Engineer at Société Général.&lt;/p></des
 >A Journey Into Non-Virtual Polymorphism in C++ - Rudyard Merriam - CppCon 2023&lt;/a>&lt;/li>
 &lt;li>&lt;a class="link" href="https://gist.github.com/olibre/3d0774df0f7a16e2da10fae2b2f26c4f" target="_blank" rel="noopener"
 >C++ : Polymorphic inheritance without vtable&lt;/a>&lt;/li>
-&lt;/ul></description></item><item><title>Archives</title><link>https://www.nktho.fr/archives/</link><pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate><guid>https://www.nktho.fr/archives/</guid><description/></item><item><title>Links</title><link>https://www.nktho.fr/links/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.nktho.fr/links/</guid><description>&lt;!-- raw HTML omitted -->
+&lt;/ul></description></item><item><title>About</title><link>https://www.nktho.fr/about/</link><pubDate>Fri, 28 Jul 2023 00:00:00 +0000</pubDate><guid>https://www.nktho.fr/about/</guid><description>&lt;p>Who am I?
+My name is Tho, and I am a Software Engineer at Société Général.&lt;/p></description></item><item><title>Archives</title><link>https://www.nktho.fr/archives/</link><pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate><guid>https://www.nktho.fr/archives/</guid><description/></item><item><title>Links</title><link>https://www.nktho.fr/links/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.nktho.fr/links/</guid><description>&lt;!-- raw HTML omitted -->
 &lt;!-- raw HTML omitted --></description></item><item><title>Search</title><link>https://www.nktho.fr/search/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.nktho.fr/search/</guid><description/></item></channel></rss>
