@@ -1,78 +1,9 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on OH! THO</title><link>https://www.nktho.fr/post/</link><description>Recent content in Posts on OH! THO</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 28 Jul 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://www.nktho.fr/post/index.xml" rel="self" type="application/rss+xml"/><item><title>PGN (Portable Game Notation) Parser</title><link>https://www.nktho.fr/p/programation/</link><pubDate>Fri, 28 Jul 2023 00:00:00 +0000</pubDate><guid>https://www.nktho.fr/p/programation/</guid><description>&lt;img src="https://www.nktho.fr/p/programation/eifel.jpeg" alt="Featured image of post PGN (Portable Game Notation) Parser" />&lt;!-- raw HTML omitted -->
-&lt;!-- raw HTML omitted -->
-&lt;pre>&lt;code>&amp;lt;h2&amp;gt;Initial State&amp;lt;/h2&amp;gt;
-&amp;lt;pre class=&amp;quot;chess-board&amp;quot;&amp;gt;
-&lt;/code>&lt;/pre>
-&lt;p>bR|bN|bB|bQ|bK|bB|bN|bR
-bP|bP|bP|bP|bP|bP|bP|bP
-| | | | | | |&lt;br>
-| | | | | | |&lt;br>
-| | | | | | |&lt;br>
-| | | | | | |&lt;br>
-wP|wP|wP|wP|wP|wP|wP|wP
-wR|wN|wB|wQ|wK|wB|wN|wR
-&lt;!-- raw HTML omitted -->&lt;/p>
-&lt;pre>&lt;code>&amp;lt;h2&amp;gt;Input&amp;lt;/h2&amp;gt;
-&amp;lt;pre&amp;gt;
-&lt;/code>&lt;/pre>
-&lt;ol>
-&lt;li>
-&lt;p>e4 e6&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>e5 f6&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>exf6 gxf6&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>Ke2 h6&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>Ke3 h5&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>Ke4 e5&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>Nh3 d6&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>Ng5 Be6&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>Nf3 Bh3&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>Nc3 Bxg2&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>Na4 b6&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>Nc5 b5&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>Nd3 b4&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>Nxe5 b3
-1/2-1/2
-&lt;!-- raw HTML omitted -->&lt;/p>
-&lt;!-- raw HTML omitted -->
-&lt;/li>
-&lt;/ol>
-&lt;p>bR|bN| |bQ|bK|bB|bN|bR
-bP| |bP| | | | |&lt;br>
-| | |bP| |bP| |&lt;br>
-| | | |wN| | |bP
-| | | |wK| | |&lt;br>
-|bP| | | |wN| |&lt;br>
-wP|wP|wP|wP| |wP|bB|wP
-wR| |wB|wQ| |wB| |wR
-&lt;!-- raw HTML omitted -->&lt;/p>
-&lt;pre>&lt;code>&amp;lt;h2&amp;gt;Technical Implementation&amp;lt;/h2&amp;gt;
-&amp;lt;p&amp;gt;Runtime polymorphism in class &amp;lt;code&amp;gt;Move&amp;lt;/code&amp;gt;;&amp;lt;/p&amp;gt;
-&amp;lt;p&amp;gt;Dispatch using &amp;lt;code&amp;gt;std::variant&amp;lt;/code&amp;gt;, &amp;lt;code&amp;gt;std::visit&amp;lt;/code&amp;gt;, and CRTP (Curiously Recurring Template Pattern) in &amp;lt;code&amp;gt;template &amp;amp;lt;typename ConcretePiece&amp;amp;gt; class BasePiece&amp;lt;/code&amp;gt;;&amp;lt;/p&amp;gt;
-&lt;/code>&lt;/pre>
-&lt;!-- raw HTML omitted --></description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on OH! THO</title><link>https://www.nktho.fr/post/</link><description>Recent content in Posts on OH! THO</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Mon, 11 Mar 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://www.nktho.fr/post/index.xml" rel="self" type="application/rss+xml"/><item><title/><link>https://www.nktho.fr/p/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.nktho.fr/p/</guid><description>&lt;p>title: PGN (Portable Game Notation) Parser
+description: C++ programming
+date: 2023-07-28
+slug: programation
+image: eifel.jpeg
+categories:&lt;/p>
+&lt;ul>
+&lt;li>Programation&lt;/li>
+&lt;/ul></description></item></channel></rss>
