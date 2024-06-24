@@ -1,4 +1,10 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>OH! THO</title><link>https://www.nktho.fr/</link><description>Recent content on OH! THO</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sat, 22 Jun 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://www.nktho.fr/index.xml" rel="self" type="application/rss+xml"/><item><title>PGN Parser</title><link>https://www.nktho.fr/p/programmation/</link><pubDate>Sat, 22 Jun 2024 00:00:00 +0000</pubDate><guid>https://www.nktho.fr/p/programmation/</guid><description>&lt;img src="https://www.nktho.fr/p/programmation/eifel.jpeg" alt="Featured image of post PGN Parser" />&lt;h3 id="overview">Overview&lt;/h3>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>OH! THO</title><link>https://www.nktho.fr/</link><description>Recent content on OH! THO</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sat, 22 Jun 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://www.nktho.fr/index.xml" rel="self" type="application/rss+xml"/><item><title>PGN Parser</title><link>https://www.nktho.fr/p/programmation/</link><pubDate>Sat, 22 Jun 2024 00:00:00 +0000</pubDate><guid>https://www.nktho.fr/p/programmation/</guid><description>&lt;img src="https://www.nktho.fr/p/programmation/eifel.jpeg" alt="Featured image of post PGN Parser" />&lt;h3 id="table-of-contents">Table of Contents&lt;/h3>
+&lt;ol>
+&lt;li>&lt;a class="link" href="#1-overview" >Overview&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="#2-architecture" >Architecture&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="#3-improvement" >Improvement&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;h3 id="1-overview">1. Overview&lt;/h3>
 &lt;p>This parser supports the PGN format based on &lt;a class="link" href="https://en.wikipedia.org/wiki/Portable_Game_Notation" target="_blank" rel="noopener"
 >Portable Game Notation&lt;/a>. The movetext is based on SAN (Standard Algebraic Notation). Disambiguation is supported by checking &lt;code>VerifyIfKingBeingCheck&lt;/code> before accepting a move.&lt;/p>
 &lt;p>It requires:&lt;/p>
@@ -62,7 +68,7 @@
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wR| |wB|wQ| |wB| |wR
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;h3 id="architecture">Architecture&lt;/h3>
+&lt;/div>&lt;h3 id="2-architecture">2. Architecture&lt;/h3>
 &lt;p>In this project, I&amp;rsquo;ve implemented a new approach using &lt;code>std::variant&lt;/code> to represent the pieces within the square. This leverages the CRTP (Curiously Recurring Template Pattern) to achieve a flexible and efficient solution. Polymorphism is implemented using &lt;code>std::visit&lt;/code>, providing runtime polymorphism without relying on virtual functions and vtables.&lt;/p>
 &lt;h4 id="basepiece-class">BasePiece Class&lt;/h4>
 &lt;p>The piece type is represented using the &lt;code>BasePiece&lt;/code> template class:&lt;/p>
@@ -98,7 +104,7 @@
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">public&lt;/span>&lt;span class="o">:&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">...&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Provides access to the derived class
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Provides access to the derived class, potential improvement with `this ConcretePiece&amp;amp;&amp;amp; self`
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">ConcretePiece&lt;/span> &lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">self&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="k">static_cast&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">ConcretePiece&lt;/span> &lt;span class="o">*&amp;gt;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">this&lt;/span>&lt;span class="p">);&lt;/span> &lt;span class="p">}&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ConcretePiece&lt;/span> &lt;span class="k">const&lt;/span> &lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">self&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="k">const&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="k">static_cast&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">ConcretePiece&lt;/span> &lt;span class="k">const&lt;/span> &lt;span class="o">*&amp;gt;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">this&lt;/span>&lt;span class="p">);&lt;/span> &lt;span class="p">}&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">...&lt;/span>
@@ -274,6 +280,12 @@
 >A Journey Into Non-Virtual Polymorphism in C++ - Rudyard Merriam - CppCon 2023&lt;/a>&lt;/li>
 &lt;li>&lt;a class="link" href="https://gist.github.com/olibre/3d0774df0f7a16e2da10fae2b2f26c4f" target="_blank" rel="noopener"
 >C++ : Polymorphic inheritance without vtable&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="3-improvement">3. Improvement&lt;/h3>
+&lt;ul>
+&lt;li>Add Iterative mode&lt;/li>
+&lt;li>Support Forward-Backward interaction&lt;/li>
+&lt;li>Overload piece swap&lt;/li>
 &lt;/ul></description></item><item><title>About</title><link>https://www.nktho.fr/about/</link><pubDate>Fri, 28 Jul 2023 00:00:00 +0000</pubDate><guid>https://www.nktho.fr/about/</guid><description>&lt;p>Who am I?
 My name is Tho, and I am a Software Engineer at Société Général.&lt;/p></description></item><item><title>Archives</title><link>https://www.nktho.fr/archives/</link><pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate><guid>https://www.nktho.fr/archives/</guid><description/></item><item><title>Links</title><link>https://www.nktho.fr/links/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.nktho.fr/links/</guid><description>&lt;!-- raw HTML omitted -->
 &lt;!-- raw HTML omitted --></description></item><item><title>Search</title><link>https://www.nktho.fr/search/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.nktho.fr/search/</guid><description/></item></channel></rss>
