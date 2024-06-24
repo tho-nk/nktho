@@ -5,7 +5,7 @@
 &lt;ul>
 &lt;li>CMake 3.22&lt;/li>
 &lt;li>GCC 12.1 and C++20 standard&lt;/li>
-&lt;li>Ubuntu 22.04 or the Docker image iainttho/ubuntu:23.10.02 based on Ubuntu 23.10.&lt;/li>
+&lt;li>Ubuntu 23.10 or the Docker image iainttho/ubuntu:23.10.02 based on Ubuntu 23.10.&lt;/li>
 &lt;/ul>
 &lt;p>The state of the board at the end of the game, in the form of an 8x8 grid:&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
