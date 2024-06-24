@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on OH! THO</title><link>https://www.nktho.fr/post/</link><description>Recent content in Posts on OH! THO</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 28 Jul 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://www.nktho.fr/post/index.xml" rel="self" type="application/rss+xml"/><item><title>PGN (Portable Game Notation) Parser</title><link>https://www.nktho.fr/p/programation/</link><pubDate>Fri, 28 Jul 2023 00:00:00 +0000</pubDate><guid>https://www.nktho.fr/p/programation/</guid><description>&lt;img src="https://www.nktho.fr/p/programation/eifel.jpeg" alt="Featured image of post PGN (Portable Game Notation) Parser" />&lt;h3 id="overview">Overview&lt;/h3>
 &lt;p>This parser supports the PGN format based on &lt;a class="link" href="https://en.wikipedia.org/wiki/Portable_Game_Notation" target="_blank" rel="noopener"
->Portable Game Notation&lt;/a>. The movetext is based on SAN (Standard Algebraic Notation). Disambiguation is supported by checking VerifyIfKingBeingCheck before accepting a move. PGN file format error detection.&lt;/p>
-&lt;h3 id="output-format">Output Format&lt;/h3>
+>Portable Game Notation&lt;/a>. The movetext is based on SAN (Standard Algebraic Notation). Disambiguation is supported by checking &lt;code>VerifyIfKingBeingCheck&lt;/code> before accepting a move.&lt;/p>
+&lt;p>It requires:&lt;/p>
+&lt;ul>
+&lt;li>CMake 3.22&lt;/li>
+&lt;li>GCC 12.1 and C++20 standard&lt;/li>
+&lt;li>Ubuntu 22.04 or the Docker image iainttho/ubuntu:23.10.02 based on Ubuntu 23.10.&lt;/li>
+&lt;/ul>
 &lt;p>The state of the board at the end of the game, in the form of an 8x8 grid:&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
@@ -25,7 +30,7 @@
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wR|wN|wB|wQ|wK|wB|wN|wR
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;p>Input&lt;/p>
+&lt;/div>&lt;h4 id="input">Input&lt;/h4>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
@@ -62,7 +67,7 @@
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">1/2-1/2
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;p>Output&lt;/p>
+&lt;/div>&lt;h4 id="output">Output&lt;/h4>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
@@ -85,5 +90,12 @@
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wR| |wB|wQ| |wB| |wR
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;p>Runtime Polymorphism
-Runtime polymorphism in class Move. Dispatch using std::variant, std::visit, and CRTP (Curiously Recurring Template Pattern) in template &lt;!-- raw HTML omitted --> class BasePiece;.&lt;/p></description></item></channel></rss>
+&lt;/div>&lt;h3 id="architecture">Architecture&lt;/h3>
+&lt;p>In this project, I&amp;rsquo;ve implemented a new approach using &lt;code>std::variant&lt;/code> to represent the pieces within the square. This leverages the CRTP (Curiously Recurring Template Pattern) to achieve a flexible and efficient solution. Polymorphism is implemented using &lt;code>std::visit&lt;/code>, providing runtime polymorphism without relying on virtual functions and vtables.&lt;/p>
+&lt;p>For more insights, refer to the following resources:&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://youtu.be/xpomlTd41hg?si=1R4RAHh1p1Effef5" target="_blank" rel="noopener"
+>A Journey Into Non-Virtual Polymorphism in C++ - Rudyard Merriam - CppCon 2023&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://gist.github.com/olibre/3d0774df0f7a16e2da10fae2b2f26c4f" target="_blank" rel="noopener"
+>C++ : Polymorphic inheritance without vtable&lt;/a>&lt;/li>
+&lt;/ul></description></item></channel></rss>
