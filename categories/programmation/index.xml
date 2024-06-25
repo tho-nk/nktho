@@ -1,95 +1,84 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Programmation on OH! THO</title><link>https://www.nktho.fr/categories/programmation/</link><description>Recent content in Programmation on OH! THO</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Mon, 24 Jun 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://www.nktho.fr/categories/programmation/index.xml" rel="self" type="application/rss+xml"/><item><title>Trading Exchange</title><link>https://www.nktho.fr/p/trading_exchange/</link><pubDate>Mon, 24 Jun 2024 00:00:00 +0000</pubDate><guid>https://www.nktho.fr/p/trading_exchange/</guid><description>&lt;img src="https://www.nktho.fr/p/trading_exchange/eifel.jpeg" alt="Featured image of post Trading Exchange" />&lt;p>Table of Contents&lt;/p>
 &lt;ul>
-&lt;li>&lt;a class="link" href="#architect" >Architect&lt;/a>&lt;/li>
-&lt;li>&lt;a class="link" href="#notes" >Notes&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="#architect" >Architect&lt;/a>
+&lt;ul>
+&lt;li>&lt;a class="link" href="#server" >Server&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="#matching-engine" >Matching Engine&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="#fifo-queue" >FIFO Queue&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a class="link" href="#improvements" >Improvements&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;h3 id="architect">Architect&lt;/h3>
-&lt;ul>
-&lt;li>
 &lt;p>The trading exchange has two main components:&lt;/p>
-&lt;ul>
-&lt;li>
-&lt;p>&lt;em>UdpServer&lt;/em>&lt;/p>
-&lt;ul>
-&lt;li>This acts a listener for listening client request, dispatching the request to matching engine.&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>
-&lt;p>&lt;em>MatchingEngine&lt;/em>&lt;/p>
-&lt;ul>
-&lt;li>
+&lt;h4 id="server">Server&lt;/h4>
+&lt;p>This is a server using the UDP protocol, which acts as a listener for client requests and dispatches these requests to a matching engine. The implementation is based on Boost.Asio.&lt;/p>
+&lt;h4 id="matching-engine">Matching Engine&lt;/h4>
 &lt;p>This component performs the logic of matching order when receiving new client request.&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>It supports multi orderbook by symbol. In this scope, after each scenario, the orderbooks will be flushed.&lt;/p>
-&lt;/li>
+&lt;p>It supports multi orderbook by symbol.&lt;/p>
+&lt;ul>
 &lt;li>
 &lt;p>Each orderbook maintains order with &lt;code>AtPriceOrderMap&lt;/code>. Order with same price will be add to the same &lt;code>AtPriceOrder&lt;/code> using time priority. Using hashtable (std::array) support constant lookup. Each &lt;code>AtPriceOrder&lt;/code> is linked to the prev and next PriceLevel.&lt;/p>
 &lt;/li>
 &lt;li>
 &lt;p>Each orderbook maintains &lt;code>Top of Book&lt;/code> (&lt;code>TOB&lt;/code>) per side.&lt;/p>
-&lt;ul>
+&lt;/li>
 &lt;li>
 &lt;p>In buy side, the top of the book is the &lt;code>AtPriceOrder&lt;/code> with highest buy price. Next &lt;code>AtPriceOrder&lt;/code> of the &lt;code>TOB&lt;/code> is the next highest smaller &lt;code>AtPriceOrder&lt;/code> in the &lt;code>AtPriceOrderMap&lt;/code>.&lt;/p>
 &lt;/li>
 &lt;li>
 &lt;p>In sell side, the top of the book is the &lt;code>AtPriceOrder&lt;/code> with lowest sell price. Next &lt;code>AtPriceOrder&lt;/code> of the &lt;code>TOB&lt;/code> is the next smallest higher &lt;code>AtPriceOrder&lt;/code> in the &lt;code>AtPriceOrderMap&lt;/code>.&lt;/p>
 &lt;/li>
-&lt;/ul>
-&lt;/li>
 &lt;li>
 &lt;p>Orders are managed with &lt;code>OrderManager&lt;/code>, this component is in charged of creating new order and releasing expired order.&lt;/p>
 &lt;/li>
 &lt;/ul>
-&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>
-&lt;p>FIFO Queue&lt;/p>
+&lt;h4 id="fifo-queue">FIFO Queue&lt;/h4>
+&lt;p>A thread-safe MPMC (multi-producers, multi-consumers) queue used to communicate between the server and the matching engine&lt;/p>
 &lt;ul>
-&lt;li>A threadsafe queue used to communicate between threads&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>
-&lt;p>Stdout is used to streamed the output of the matching engine. The stdout is used in threadsafe&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>Stdlog is used to streamed the performance measurement message&lt;/p>
+&lt;li>Stdout is used to streamed the output of the matching engine. The stdout is used in threadsafe&lt;/li>
+&lt;li>Stdlog is used to streamed the performance measurement message
 &lt;ul>
 &lt;li>&lt;code>Perf|OrderBook|Add|Execution|111&lt;/code>&lt;/li>
 &lt;li>&lt;code>Perf|OrderBook|Cancel|Execution|50&lt;/code>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-&lt;h3 id="notes">Notes&lt;/h3>
-&lt;p>&lt;em>UDP package&lt;/em>&lt;/p>
+&lt;h3 id="improvements">Improvements&lt;/h3>
 &lt;ul>
-&lt;li>Packages can arrive out of order, in stress test, there could be an order of next scenario comes before current scenario. This can cause same order id, client id (same index in array) being undefined behaviour.&lt;/li>
-&lt;li>Solution : Reject order if it is already created in current scenario&lt;/li>
-&lt;/ul>
-&lt;p>&lt;em>Improvement&lt;/em>&lt;/p>
-&lt;ul>
-&lt;li>Add interface for UdpServer. That helps the exchange listening on different protocol&lt;/li>
-&lt;li>Add more unitest&lt;/li>
-&lt;li>Analyse the multithreading&lt;/li>
-&lt;li>Analyse the statistics&lt;/li>
-&lt;li>Optimise performance&lt;/li>
+&lt;li>Add an interface for the Server to support listening on different protocols, such as TCP/IP.&lt;/li>
+&lt;li>Implement the FIX protocol.&lt;/li>
+&lt;li>Implement a lock-free queue.&lt;/li>
+&lt;li>Optimize performance.&lt;/li>
+&lt;li>Implement an object pool to avoid dynamic allocations.&lt;/li>
 &lt;/ul></description></item><item><title>PGN Parser</title><link>https://www.nktho.fr/p/pgn_parser/</link><pubDate>Sat, 22 Jun 2024 00:00:00 +0000</pubDate><guid>https://www.nktho.fr/p/pgn_parser/</guid><description>&lt;img src="https://www.nktho.fr/p/pgn_parser/eifel.jpeg" alt="Featured image of post PGN Parser" />&lt;p>Table of Contents&lt;/p>
-&lt;ol>
-&lt;li>&lt;a class="link" href="#1-overview" >Overview&lt;/a>&lt;/li>
-&lt;li>&lt;a class="link" href="#2-architecture" >Architecture&lt;/a>&lt;/li>
-&lt;li>&lt;a class="link" href="#3-pros_cons" >Pros and Cons&lt;/a>&lt;/li>
-&lt;li>&lt;a class="link" href="#4-improvement" >Improvement&lt;/a>&lt;/li>
-&lt;/ol>
-&lt;h3 id="1-overview">1. Overview&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a class="link" href="#overview" >Overview&lt;/a>
+&lt;ul>
+&lt;li>&lt;a class="link" href="#input" >Input&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="#output" >Output&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a class="link" href="#architecture" >Architecture&lt;/a>
+&lt;ul>
+&lt;li>&lt;a class="link" href="#basepiece-class" >BasePiece Class&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="#concrete-piece-classes" >Concrete Piece Classes&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="#piece-variants" >Piece Variants&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="#square-class" >Square Class&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="#polymorphism-without-vtables" >Polymorphism without vtables:&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a class="link" href="#pros-and-cons" >Pros and Cons&lt;/a>
+&lt;ul>
+&lt;li>&lt;a class="link" href="#pros" >Pros&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="#cons" >Cons&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a class="link" href="#improvements" >Improvements&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="overview">Overview&lt;/h3>
 &lt;p>This parser supports the PGN format based on &lt;a class="link" href="https://en.wikipedia.org/wiki/Portable_Game_Notation" target="_blank" rel="noopener"
 >Portable Game Notation&lt;/a>. The movetext is based on SAN (Standard Algebraic Notation). Disambiguation is supported by checking if the king is being checked before accepting a move.&lt;/p>
-&lt;p>It requires:&lt;/p>
-&lt;ul>
-&lt;li>CMake 3.22&lt;/li>
-&lt;li>GCC 12.1 and C++20 standard&lt;/li>
-&lt;li>Ubuntu 23.10 or the Docker image iainttho/ubuntu:23.10.02 based on Ubuntu 23.10.&lt;/li>
-&lt;/ul>
 &lt;p>The state of the board at the end of the game, in the form of an 8x8 grid:&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
@@ -145,7 +134,7 @@
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wR| |wB|wQ| |wB| |wR
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;h3 id="2-architecture">2. Architecture&lt;/h3>
+&lt;/div>&lt;h3 id="architecture">Architecture&lt;/h3>
 &lt;p>In this project, I&amp;rsquo;ve implemented a new approach using &lt;code>std::variant&lt;/code> to represent the pieces within the square. This leverages the &lt;code>CRTP&lt;/code> (Curiously Recurring Template Pattern) to achieve a flexible and efficient solution. Polymorphism is implemented using &lt;code>std::visit&lt;/code>, providing runtime polymorphism without relying on virtual functions and vtables.&lt;/p>
 &lt;h4 id="basepiece-class">BasePiece Class&lt;/h4>
 &lt;p>The piece type is represented using the &lt;code>BasePiece&lt;/code> template class, leveraging &lt;code>CRTP&lt;/code> for flexible and efficient code structuring.&lt;/p>
@@ -174,11 +163,11 @@
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">public&lt;/span>&lt;span class="o">:&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">...&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Provides access to the derived class, potential improvement with `this ConcretePiece&amp;amp;&amp;amp; self`
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Potential improvement with `this ConcretePiece&amp;amp;&amp;amp; self`
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">ConcretePiece&lt;/span> &lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">self&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="k">static_cast&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">ConcretePiece&lt;/span> &lt;span class="o">*&amp;gt;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">this&lt;/span>&lt;span class="p">);&lt;/span> &lt;span class="p">}&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ConcretePiece&lt;/span> &lt;span class="k">const&lt;/span> &lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">self&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="k">const&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="k">static_cast&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">ConcretePiece&lt;/span> &lt;span class="k">const&lt;/span> &lt;span class="o">*&amp;gt;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">this&lt;/span>&lt;span class="p">);&lt;/span> &lt;span class="p">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Validates basic moves
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kt">bool&lt;/span> &lt;span class="nf">IsValidBasicMove&lt;/span>&lt;span class="p">(...)&lt;/span> &lt;span class="k">const&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">bool&lt;/span> &lt;span class="nf">IsValidBasicMove&lt;/span>&lt;span class="p">(...)&lt;/span> &lt;span class="k">const&lt;/span> &lt;span class="p">{&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">self&lt;/span>&lt;span class="p">().&lt;/span>&lt;span class="n">IsValidBasicMove_&lt;/span>&lt;span class="p">(...);&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">...&lt;/span>
@@ -189,7 +178,7 @@
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">};&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;h4 id="derived-piece-classes">Derived Piece Classes&lt;/h4>
+&lt;/div>&lt;h4 id="concrete-piece-classes">Concrete Piece Classes&lt;/h4>
 &lt;p>Each type of piece implements its specific characteristics:&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
@@ -229,9 +218,7 @@
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="n">PiecesReference&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">vector&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">reference_wrapper&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="k">const&lt;/span> &lt;span class="n">Piece&lt;/span>&lt;span class="o">&amp;gt;&amp;gt;&lt;/span>&lt;span class="p">;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;!-- raw HTML omitted -->
-&lt;!-- raw HTML omitted -->
-&lt;h4 id="square-class">Square Class&lt;/h4>
+&lt;/div>&lt;h4 id="square-class">Square Class&lt;/h4>
 &lt;p>The Square class processes moves and manages the state of the pieces:&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
@@ -272,8 +259,6 @@
 &lt;/span>&lt;span class="lnt">35
 &lt;/span>&lt;span class="lnt">36
 &lt;/span>&lt;span class="lnt">37
-&lt;/span>&lt;span class="lnt">38
-&lt;/span>&lt;span class="lnt">39
 &lt;/span>&lt;/code>&lt;/pre>&lt;/td>
 &lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="k">class&lt;/span> &lt;span class="nc">Square&lt;/span> &lt;span class="p">{&lt;/span>
@@ -284,15 +269,13 @@
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">...&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">subPieces&lt;/span>&lt;span class="p">;&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Process BasicMove
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kt">void&lt;/span> &lt;span class="nf">ProcessBasicMove&lt;/span>&lt;span class="p">(...);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">void&lt;/span> &lt;span class="nf">ProcessBasicMove&lt;/span>&lt;span class="p">(...);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">private&lt;/span>&lt;span class="o">:&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">...&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Pieces&lt;/span> &lt;span class="n">pieces_&lt;/span>&lt;span class="p">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Rounds&lt;/span> &lt;span class="n">rounds_&lt;/span>&lt;span class="p">;&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">private&lt;/span>&lt;span class="o">:&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// A move is valid if King won&amp;#39;t be checked
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kt">void&lt;/span> &lt;span class="n">ValidateMove&lt;/span>&lt;span class="p">(...);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">void&lt;/span> &lt;span class="n">ValidateMove&lt;/span>&lt;span class="p">(...);&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">bool&lt;/span> &lt;span class="nf">VerifyIfKingBeingCheck&lt;/span>&lt;span class="p">(...);&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">};&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
@@ -317,9 +300,7 @@
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;ul>
-&lt;li>
-&lt;p>Explanation of &lt;code>std::visit&lt;/code> and &lt;code>std::variant&lt;/code> for Polymorphism:&lt;/p>
+&lt;/div>&lt;h4 id="polymorphism-without-vtables">Polymorphism without vtables:&lt;/h4>
 &lt;ul>
 &lt;li>
 &lt;p>std::visit is used to handle the different possible types of pieces in a polymorphic manner:&lt;/p>
@@ -333,9 +314,13 @@
 &lt;p>Using &lt;code>std::visit&lt;/code> in conjunction with &lt;code>std::variant&lt;/code> allows you to achieve polymorphic behavior without traditional inheritance, enabling you to handle multiple piece types in a type-safe manner.&lt;/p>
 &lt;/li>
 &lt;/ul>
-&lt;/li>
+&lt;p>This project requires:&lt;/p>
+&lt;ul>
+&lt;li>CMake 3.22&lt;/li>
+&lt;li>GCC 12.1 and C++20 standard&lt;/li>
+&lt;li>Ubuntu 23.10 or the Docker image iainttho/ubuntu:23.10.02 based on Ubuntu 23.10.&lt;/li>
 &lt;/ul>
-&lt;h3 id="3-pros-and-cons">3. Pros and Cons&lt;/h3>
+&lt;h3 id="pros-and-cons">Pros and Cons&lt;/h3>
 &lt;h4 id="pros">Pros&lt;/h4>
 &lt;ul>
 &lt;li>Type Safety: Ensures type-safe operations within variant.&lt;/li>
@@ -350,7 +335,7 @@
 &lt;li>Debugging Complexity: Debugging interactions between variants and lambda functions can be intricate.&lt;/li>
 &lt;li>Memory Usage: Variants may consume more memory if objects stored have significantly different sizes, leading to potential memory fragmentation and inefficiency.&lt;/li>
 &lt;/ul>
-&lt;h3 id="4-improvement">4. Improvement&lt;/h3>
+&lt;h3 id="improvements">Improvements&lt;/h3>
 &lt;ul>
 &lt;li>Add Iterative mode&lt;/li>
 &lt;li>Support Forward-Backward interaction&lt;/li>
