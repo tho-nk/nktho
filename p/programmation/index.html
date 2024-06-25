@@ -61,13 +61,6 @@
 </span><span class=lnt>15
 </span><span class=lnt>16
 </span><span class=lnt>17
-</span><span class=lnt>18
-</span><span class=lnt>19
-</span><span class=lnt>20
-</span><span class=lnt>21
-</span><span class=lnt>22
-</span><span class=lnt>23
-</span><span class=lnt>24
 </span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=k>template</span> <span class=o>&lt;</span><span class=k>typename</span> <span class=n>ConcretePiece</span><span class=o>&gt;</span> <span class=k>class</span> <span class=nc>BasePiece</span>
 </span></span><span class=line><span class=cl><span class=p>{</span>
 </span></span><span class=line><span class=cl>  <span class=k>public</span><span class=o>:</span>
@@ -75,42 +68,33 @@
 </span></span><span class=line><span class=cl>    <span class=c1>// Provides access to the derived class, potential improvement with `this ConcretePiece&amp;&amp; self`
 </span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>ConcretePiece</span> <span class=o>&amp;</span><span class=n>self</span><span class=p>()</span> <span class=p>{</span> <span class=k>return</span> <span class=o>*</span><span class=k>static_cast</span><span class=o>&lt;</span><span class=n>ConcretePiece</span> <span class=o>*&gt;</span><span class=p>(</span><span class=k>this</span><span class=p>);</span> <span class=p>}</span>
 </span></span><span class=line><span class=cl>    <span class=n>ConcretePiece</span> <span class=k>const</span> <span class=o>&amp;</span><span class=n>self</span><span class=p>()</span> <span class=k>const</span> <span class=p>{</span> <span class=k>return</span> <span class=o>*</span><span class=k>static_cast</span><span class=o>&lt;</span><span class=n>ConcretePiece</span> <span class=k>const</span> <span class=o>*&gt;</span><span class=p>(</span><span class=k>this</span><span class=p>);</span> <span class=p>}</span>
-</span></span><span class=line><span class=cl>    <span class=p>...</span>
-</span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// Validates basic moves
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kt>bool</span> <span class=n>IsValidBasicMove</span><span class=p>(...)</span> <span class=k>const</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=nf>self</span><span class=p>().</span><span class=n>IsValidBasicMove_</span><span class=p>(...);</span>
-</span></span><span class=line><span class=cl>    <span class=p>}</span>
-</span></span><span class=line><span class=cl>    <span class=c1>// Validates attack moves
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kt>bool</span> <span class=nf>IsValidAttackMove</span><span class=p>(...)</span> <span class=k>const</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>self</span><span class=p>().</span><span class=n>IsValidAttackMove_</span><span class=p>(...);</span>
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kt>bool</span> <span class=nf>IsValidBasicMove</span><span class=p>(...)</span> <span class=k>const</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>self</span><span class=p>().</span><span class=n>IsValidBasicMove_</span><span class=p>(...);</span>
 </span></span><span class=line><span class=cl>    <span class=p>}</span>
 </span></span><span class=line><span class=cl>    <span class=p>...</span>
-</span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>  <span class=k>protected</span><span class=o>:</span>
 </span></span><span class=line><span class=cl>    <span class=k>friend</span> <span class=n>ConcretePiece</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>    <span class=n>BasePiece</span><span class=p>(...)</span> <span class=p>{}</span>
-</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=p>...</span>
 </span></span><span class=line><span class=cl><span class=p>};</span>
-</span></span></code></pre></td></tr></table></div></div><h4 id=derived-piece-classes>Derived Piece Classes</h4><p>Each type of piece implements its specific characteristics:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
+</span></span></code></pre></td></tr></table></div></div><h4 id=derived-piece-classes>Derived Piece Classes</h4><p>Each type of piece implements its specific characteristics:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
 </span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=k>class</span> <span class=nc>Bishop</span> <span class=o>:</span> <span class=k>public</span> <span class=n>BasePiece</span><span class=o>&lt;</span><span class=n>Bishop</span><span class=o>&gt;</span> <span class=p>{</span>
 </span></span><span class=line><span class=cl>  <span class=k>public</span><span class=o>:</span>
 </span></span><span class=line><span class=cl>    <span class=n>Bishop</span><span class=p>(...)</span> <span class=o>:</span> <span class=n>BasePiece</span><span class=p>(...)</span> <span class=p>{}</span>
-</span></span><span class=line><span class=cl>    <span class=n>Bishop</span><span class=p>()</span> <span class=o>=</span> <span class=k>default</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=p>...</span>
 </span></span><span class=line><span class=cl>  <span class=k>private</span><span class=o>:</span>
 </span></span><span class=line><span class=cl>    <span class=k>friend</span> <span class=k>class</span> <span class=nc>BasePiece</span><span class=o>&lt;</span><span class=n>Bishop</span><span class=o>&gt;</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>    <span class=kt>bool</span> <span class=nf>IsValidBasicMove_</span><span class=p>(...)</span> <span class=k>const</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>    <span class=kt>bool</span> <span class=nf>IsValidAttackMove_</span><span class=p>(...)</span> <span class=k>const</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>...</span>
 </span></span><span class=line><span class=cl><span class=p>};</span>
 </span></span></code></pre></td></tr></table></div></div><h4 id=piece-variants>Piece Variants</h4><p>Pieces are represented using std::variant:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
@@ -187,70 +171,20 @@
 </span><span class=lnt>37
 </span><span class=lnt>38
 </span><span class=lnt>39
-</span><span class=lnt>40
-</span><span class=lnt>41
-</span><span class=lnt>42
-</span><span class=lnt>43
-</span><span class=lnt>44
-</span><span class=lnt>45
-</span><span class=lnt>46
-</span><span class=lnt>47
-</span><span class=lnt>48
-</span><span class=lnt>49
-</span><span class=lnt>50
-</span><span class=lnt>51
-</span><span class=lnt>52
-</span><span class=lnt>53
-</span><span class=lnt>54
-</span><span class=lnt>55
-</span><span class=lnt>56
-</span><span class=lnt>57
-</span><span class=lnt>58
-</span><span class=lnt>59
-</span><span class=lnt>60
-</span><span class=lnt>61
-</span><span class=lnt>62
-</span><span class=lnt>63
-</span><span class=lnt>64
-</span><span class=lnt>65
-</span><span class=lnt>66
 </span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=k>class</span> <span class=nc>Square</span> <span class=p>{</span>
 </span></span><span class=line><span class=cl>  <span class=k>public</span><span class=o>:</span>
 </span></span><span class=line><span class=cl>    <span class=p>...</span>
 </span></span><span class=line><span class=cl>    <span class=n>PiecesReference</span> <span class=n>GetPieceOfTypeAndColor</span><span class=p>(</span><span class=k>const</span> <span class=n>PieceType</span> <span class=o>&amp;</span><span class=n>pieceType</span><span class=p>,</span> <span class=k>const</span> <span class=n>Color</span> <span class=o>&amp;</span><span class=n>color</span><span class=p>,</span> <span class=p>...)</span> <span class=k>const</span> <span class=p>{</span>
 </span></span><span class=line><span class=cl>      <span class=n>PiecesReference</span> <span class=n>subPieces</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>      <span class=k>for</span> <span class=p>(</span><span class=k>const</span> <span class=k>auto</span> <span class=o>&amp;</span><span class=nl>row</span> <span class=p>:</span> <span class=n>GetPieces</span><span class=p>())</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>          <span class=k>for</span> <span class=p>(</span><span class=k>const</span> <span class=k>auto</span> <span class=o>&amp;</span><span class=nl>var</span> <span class=p>:</span> <span class=n>row</span><span class=p>)</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>              <span class=n>std</span><span class=o>::</span><span class=n>visit</span><span class=p>(</span>
-</span></span><span class=line><span class=cl>                  <span class=p>[</span><span class=o>&amp;</span><span class=p>](</span><span class=k>const</span> <span class=k>auto</span> <span class=o>&amp;</span><span class=n>value</span><span class=p>)</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>                      <span class=p>...</span>
-</span></span><span class=line><span class=cl>                      <span class=n>subPieces</span><span class=p>.</span><span class=n>push_back</span><span class=p>(...);</span>
-</span></span><span class=line><span class=cl>                  <span class=p>},</span>
-</span></span><span class=line><span class=cl>                  <span class=n>var</span><span class=p>);</span>
-</span></span><span class=line><span class=cl>          <span class=p>}</span>
-</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>      <span class=p>...</span>
 </span></span><span class=line><span class=cl>      <span class=k>return</span> <span class=n>subPieces</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>    <span class=p>}</span>
-</span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// Process BasicMove
 </span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kt>void</span> <span class=nf>ProcessBasicMove</span><span class=p>(...);</span>
-</span></span><span class=line><span class=cl>    <span class=kt>void</span> <span class=nf>MovePiece</span><span class=p>(...);</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=c1>// Process AttackMove
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kt>void</span> <span class=nf>ProcessAttackMove</span><span class=p>(...);</span>
-</span></span><span class=line><span class=cl>    <span class=kt>void</span> <span class=nf>AttackPiece</span><span class=p>(...);</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=c1>// Process PromotionMove
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kt>void</span> <span class=nf>ProcessPromotionMove</span><span class=p>(...);</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=c1>// Process AttackPromotionMove Pawn only
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kt>void</span> <span class=nf>ProcessAttackPromotionMove</span><span class=p>(...);</span>
-</span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>  <span class=k>private</span><span class=o>:</span>
 </span></span><span class=line><span class=cl>    <span class=p>...</span>
 </span></span><span class=line><span class=cl>    <span class=n>Pieces</span> <span class=n>pieces_</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>    <span class=n>Rounds</span> <span class=n>rounds_</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>  <span class=k>private</span><span class=o>:</span>
 </span></span><span class=line><span class=cl>    <span class=c1>// A move is valid if King won&#39;t be checked
 </span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kt>void</span> <span class=n>ValidateMove</span><span class=p>(...);</span>
@@ -262,17 +196,13 @@
 </span></span><span class=line><span class=cl>    <span class=p>...</span>
 </span></span><span class=line><span class=cl>    <span class=c1>// Get pieces of a specific type (Pawn) and color (White)
 </span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=k>const</span> <span class=n>PiecesReference</span> <span class=o>&amp;</span><span class=n>subPieces</span> <span class=o>=</span> <span class=n>GetPieceOfTypeAndColor</span><span class=p>(</span><span class=n>PieceType</span><span class=o>::</span><span class=n>Pawn</span><span class=p>,</span> <span class=n>Color</span><span class=o>::</span><span class=n>White</span><span class=p>,</span> <span class=p>...);</span>
-</span></span><span class=line><span class=cl>    
 </span></span><span class=line><span class=cl>    <span class=kt>bool</span> <span class=n>isValid</span> <span class=o>=</span> <span class=nb>false</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>  
 </span></span><span class=line><span class=cl>    <span class=c1>// Iterate through the pieces to check if any can perform a valid basic move
 </span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=k>for</span> <span class=p>(</span><span class=k>auto</span> <span class=o>&amp;</span><span class=nl>it</span> <span class=p>:</span> <span class=n>subPieces</span><span class=p>)</span> <span class=p>{</span>
 </span></span><span class=line><span class=cl>        <span class=n>std</span><span class=o>::</span><span class=n>visit</span><span class=p>(</span>
 </span></span><span class=line><span class=cl>            <span class=p>[</span><span class=o>&amp;</span><span class=p>](</span><span class=k>auto</span> <span class=o>&amp;&amp;</span><span class=n>piece</span><span class=p>)</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>                <span class=c1>// Check if the current piece has a valid basic move
-</span></span></span><span class=line><span class=cl><span class=c1></span>                <span class=n>isValid</span> <span class=o>=</span> <span class=n>piece</span><span class=p>.</span><span class=n>IsValidBasicMove</span><span class=p>();</span>
-</span></span><span class=line><span class=cl>                <span class=c1>// Perform additional validation for the move
-</span></span></span><span class=line><span class=cl><span class=c1></span>                <span class=n>ValidateMove</span><span class=p>(...);</span>
+</span></span><span class=line><span class=cl>                <span class=n>isValid</span> <span class=o>=</span> <span class=n>piece</span><span class=p>.</span><span class=n>IsValidBasicMove</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>                <span class=n>ValidateMove</span><span class=p>(...);</span>
 </span></span><span class=line><span class=cl>            <span class=p>},</span>
 </span></span><span class=line><span class=cl>            <span class=n>it</span><span class=p>.</span><span class=n>get</span><span class=p>());</span>
 </span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=n>isValid</span><span class=p>)</span>
