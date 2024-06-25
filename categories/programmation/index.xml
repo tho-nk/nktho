@@ -249,7 +249,7 @@
 &lt;p>std::visit is used to handle the different possible types of pieces in a polymorphic manner:&lt;/p>
 &lt;ul>
 &lt;li>&lt;code>std::visit&lt;/code> is a utility function in C++17 that allows you to apply a callable (like a lambda function) to the value contained within a &lt;code>std::variant&lt;/code>. This is particularly useful for handling different types that might be stored in the variant, providing a form of polymorphism.&lt;/li>
-&lt;li>&lt;code>'subPieces'&lt;/code> is a collection of &lt;code>std::variant&lt;/code>, which can hold different types of pieces. This design allows for storing multiple types in a single collection while retaining type safety.&lt;/li>
+&lt;li>&lt;code>subPieces&lt;/code> is a collection of &lt;code>std::variant&lt;/code>, which can hold different types of pieces. This design allows for storing multiple types in a single collection while retaining type safety.&lt;/li>
 &lt;li>By using &lt;code>std::visit&lt;/code>, we can invoke methods on the pieces contained in the variant without needing to know the specific type of each piece at compile time. The lambda function inside &lt;code>std::visit&lt;/code> will be called with the actual type held by the variant.&lt;/li>
 &lt;/ul>
 &lt;/li>
@@ -260,14 +260,14 @@
 &lt;/li>
 &lt;/ul>
 &lt;h3 id="3-pros-and-cons">3. Pros and Cons&lt;/h3>
-&lt;h4 id="pros">Pros:&lt;/h4>
+&lt;h4 id="pros">Pros&lt;/h4>
 &lt;ul>
 &lt;li>Type Safety: Ensures type-safe operations within variant.&lt;/li>
 &lt;li>Polymorphic Behavior: Enables runtime polymorphism without vtables.&lt;/li>
 &lt;li>Efficiency: Eliminates overhead from virtual function calls and pointer indirection typically associated with traditional inheritance models.&lt;/li>
 &lt;li>Flexibility: Supports adding new types without interface changes.&lt;/li>
 &lt;/ul>
-&lt;h4 id="cons">Cons:&lt;/h4>
+&lt;h4 id="cons">Cons&lt;/h4>
 &lt;ul>
 &lt;li>Compile-Time Knowledge: Requires knowing all variant types at compile time.&lt;/li>
 &lt;li>Error Handling Complexity: Handling unexpected types can be complex.&lt;/li>
