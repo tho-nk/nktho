@@ -286,6 +286,82 @@
 >A Journey Into Non-Virtual Polymorphism in C++ - Rudyard Merriam - CppCon 2023&lt;/a>&lt;/li>
 &lt;li>&lt;a class="link" href="https://gist.github.com/olibre/3d0774df0f7a16e2da10fae2b2f26c4f" target="_blank" rel="noopener"
 >C++ : Polymorphic inheritance without vtable&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Trading Exchange</title><link>https://www.nktho.fr/p/programmation/</link><pubDate>Sat, 22 Jun 2024 00:00:00 +0000</pubDate><guid>https://www.nktho.fr/p/programmation/</guid><description>&lt;img src="https://www.nktho.fr/p/programmation/eifel.jpeg" alt="Featured image of post Trading Exchange" />&lt;p>Table of Contents&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="#architect" >Architect&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="#notes" >Notes&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="architect">Architect&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>The trading exchange has two main components:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;em>UdpServer&lt;/em>&lt;/p>
+&lt;ul>
+&lt;li>This acts a listener for listening client request, dispatching the request to matching engine.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;em>MatchingEngine&lt;/em>&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>This component performs the logic of matching order when receiving new client request.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>It supports multi orderbook by symbol. In this scope, after each scenario, the orderbooks will be flushed.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Each orderbook maintains order with &lt;code>AtPriceOrderMap&lt;/code>. Order with same price will be add to the same &lt;code>AtPriceOrder&lt;/code> using time priority. Using hashtable (std::array) support constant lookup. Each &lt;code>AtPriceOrder&lt;/code> is linked to the prev and next PriceLevel.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Each orderbook maintains &lt;code>Top of Book&lt;/code> (&lt;code>TOB&lt;/code>) per side.&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>In buy side, the top of the book is the &lt;code>AtPriceOrder&lt;/code> with highest buy price. Next &lt;code>AtPriceOrder&lt;/code> of the &lt;code>TOB&lt;/code> is the next highest smaller &lt;code>AtPriceOrder&lt;/code> in the &lt;code>AtPriceOrderMap&lt;/code>.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>In sell side, the top of the book is the &lt;code>AtPriceOrder&lt;/code> with lowest sell price. Next &lt;code>AtPriceOrder&lt;/code> of the &lt;code>TOB&lt;/code> is the next smallest higher &lt;code>AtPriceOrder&lt;/code> in the &lt;code>AtPriceOrderMap&lt;/code>.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Orders are managed with &lt;code>OrderManager&lt;/code>, this component is in charged of creating new order and releasing expired order.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>FIFO Queue&lt;/p>
+&lt;ul>
+&lt;li>A threadsafe queue used to communicate between threads&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Stdout is used to streamed the output of the matching engine. The stdout is used in threadsafe&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Stdlog is used to streamed the performance measurement message&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>Perf|OrderBook|Add|Execution|111&lt;/code>&lt;/li>
+&lt;li>&lt;code>Perf|OrderBook|Cancel|Execution|50&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="notes">Notes&lt;/h3>
+&lt;p>&lt;em>UDP package&lt;/em>&lt;/p>
+&lt;ul>
+&lt;li>Packages can arrive out of order, in stress test, there could be an order of next scenario comes before current scenario. This can cause same order id, client id (same index in array) being undefined behaviour.&lt;/li>
+&lt;li>Solution : Reject order if it is already created in current scenario&lt;/li>
+&lt;/ul>
+&lt;p>&lt;em>Improvement&lt;/em>&lt;/p>
+&lt;ul>
+&lt;li>Add interface for UdpServer. That helps the exchange listening on different protocol&lt;/li>
+&lt;li>Add more unitest&lt;/li>
+&lt;li>Analyse the multithreading&lt;/li>
+&lt;li>Analyse the statistics&lt;/li>
+&lt;li>Optimise performance&lt;/li>
 &lt;/ul></description></item><item><title>About</title><link>https://www.nktho.fr/about/</link><pubDate>Fri, 28 Jul 2023 00:00:00 +0000</pubDate><guid>https://www.nktho.fr/about/</guid><description>&lt;p>Who am I?
 My name is Tho, and I am a Software Engineer at Société Général.&lt;/p></description></item><item><title>Archives</title><link>https://www.nktho.fr/archives/</link><pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate><guid>https://www.nktho.fr/archives/</guid><description/></item><item><title>Links</title><link>https://www.nktho.fr/links/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.nktho.fr/links/</guid><description>&lt;!-- raw HTML omitted -->
 &lt;!-- raw HTML omitted --></description></item><item><title>Search</title><link>https://www.nktho.fr/search/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.nktho.fr/search/</guid><description/></item></channel></rss>
