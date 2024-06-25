@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CRTP (Curiously Recurring Template Pattern) on OH! THO</title><link>https://www.nktho.fr/tags/crtp-curiously-recurring-template-pattern/</link><description>Recent content in CRTP (Curiously Recurring Template Pattern) on OH! THO</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sat, 22 Jun 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://www.nktho.fr/tags/crtp-curiously-recurring-template-pattern/index.xml" rel="self" type="application/rss+xml"/><item><title>PGN Parser</title><link>https://www.nktho.fr/p/pgn_parser/</link><pubDate>Sat, 22 Jun 2024 00:00:00 +0000</pubDate><guid>https://www.nktho.fr/p/pgn_parser/</guid><description>&lt;img src="https://www.nktho.fr/p/pgn_parser/eifel.jpeg" alt="Featured image of post PGN Parser" />&lt;p>Table of Contents&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="#overview" >Overview&lt;/a>
+&lt;ul>
+&lt;li>&lt;a class="link" href="#input" >Input&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="#output" >Output&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a class="link" href="#architecture" >Architecture&lt;/a>
+&lt;ul>
+&lt;li>&lt;a class="link" href="#basepiece-class" >BasePiece Class&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="#concrete-piece-classes" >Concrete Piece Classes&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="#piece-variants" >Piece Variants&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="#square-class" >Square Class&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="#polymorphism-without-vtables" >Polymorphism without vtables&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a class="link" href="#pros-and-cons" >Pros and Cons&lt;/a>
+&lt;ul>
+&lt;li>&lt;a class="link" href="#pros" >Pros&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="#cons" >Cons&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a class="link" href="#improvements" >Improvements&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="overview">Overview&lt;/h3>
+&lt;p>This parser supports the PGN format based on &lt;a class="link" href="https://en.wikipedia.org/wiki/Portable_Game_Notation" target="_blank" rel="noopener"
+>Portable Game Notation&lt;/a>. The movetext is based on SAN (Standard Algebraic Notation). Disambiguation is supported by checking if the king is being checked before accepting a move.&lt;/p>
+&lt;p>The state of the board at the end of the game, in the form of an 8x8 grid:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-plaintext" data-lang="plaintext">&lt;span class="line">&lt;span class="cl">bR|bN|bB|bQ|bK|bB|bN|bR
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bP|bP|bP|bP|bP|bP|bP|bP
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> | | | | | | |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> | | | | | | |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> | | | | | | |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> | | | | | | |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wP|wP|wP|wP|wP|wP|wP|wP
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wR|wN|wB|wQ|wK|wB|wN|wR
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h4 id="input">Input&lt;/h4>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-plaintext" data-lang="plaintext">&lt;span class="line">&lt;span class="cl">1. e4 e6 2. e5 f6 3. exf6 gxf6 4. Ke2 h6 5. Ke3 h5 6. Ke4 e5 7. Nh3 d6 8. Ng5 Be6 9. Nf3 Bh3 10. Nc3 Bxg2 11. Na4 b6 12. Nc5 b5 13. Nd3 b4 14. Nxe5 b3 1/2-1/2
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h4 id="output">Output&lt;/h4>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-plaintext" data-lang="plaintext">&lt;span class="line">&lt;span class="cl">bR|bN| |bQ|bK|bB|bN|bR
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bP| |bP| | | | |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> | | |bP| |bP| |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> | | | |wN| | |bP
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> | | | |wK| | |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> |bP| | | |wN| |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wP|wP|wP|wP| |wP|bB|wP
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wR| |wB|wQ| |wB| |wR
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="architecture">Architecture&lt;/h3>
+&lt;p>In this project, I&amp;rsquo;ve implemented a new approach using &lt;code>std::variant&lt;/code> to represent the pieces within the square. This leverages the &lt;code>CRTP&lt;/code> (Curiously Recurring Template Pattern) to achieve a flexible and efficient solution. Polymorphism is implemented using &lt;code>std::visit&lt;/code>, providing runtime polymorphism without relying on virtual functions and vtables.&lt;/p>
+&lt;h4 id="basepiece-class">BasePiece Class&lt;/h4>
+&lt;p>The piece type is represented using the &lt;code>BasePiece&lt;/code> template class, leveraging &lt;code>CRTP&lt;/code> for flexible and efficient code structuring.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="k">template&lt;/span> &lt;span class="o">&amp;lt;&lt;/span>&lt;span class="k">typename&lt;/span> &lt;span class="n">ConcretePiece&lt;/span>&lt;span class="o">&amp;gt;&lt;/span> &lt;span class="k">class&lt;/span> &lt;span class="nc">BasePiece&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">public&lt;/span>&lt;span class="o">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">...&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Potential improvement with `this ConcretePiece&amp;amp;&amp;amp; self`
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">ConcretePiece&lt;/span> &lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">self&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="k">static_cast&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">ConcretePiece&lt;/span> &lt;span class="o">*&amp;gt;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">this&lt;/span>&lt;span class="p">);&lt;/span> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ConcretePiece&lt;/span> &lt;span class="k">const&lt;/span> &lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">self&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="k">const&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="k">static_cast&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">ConcretePiece&lt;/span> &lt;span class="k">const&lt;/span> &lt;span class="o">*&amp;gt;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">this&lt;/span>&lt;span class="p">);&lt;/span> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">bool&lt;/span> &lt;span class="nf">IsValidBasicMove&lt;/span>&lt;span class="p">(...)&lt;/span> &lt;span class="k">const&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">self&lt;/span>&lt;span class="p">().&lt;/span>&lt;span class="n">IsValidBasicMove_&lt;/span>&lt;span class="p">(...);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">...&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">protected&lt;/span>&lt;span class="o">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">friend&lt;/span> &lt;span class="n">ConcretePiece&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">BasePiece&lt;/span>&lt;span class="p">(...)&lt;/span> &lt;span class="p">{}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">...&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h4 id="concrete-piece-classes">Concrete Piece Classes&lt;/h4>
+&lt;p>Each type of piece implements its specific characteristics:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;span class="lnt">9
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="k">class&lt;/span> &lt;span class="nc">Bishop&lt;/span> &lt;span class="o">:&lt;/span> &lt;span class="k">public&lt;/span> &lt;span class="n">BasePiece&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">Bishop&lt;/span>&lt;span class="o">&amp;gt;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">public&lt;/span>&lt;span class="o">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Bishop&lt;/span>&lt;span class="p">(...)&lt;/span> &lt;span class="o">:&lt;/span> &lt;span class="n">BasePiece&lt;/span>&lt;span class="p">(...)&lt;/span> &lt;span class="p">{}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">...&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">private&lt;/span>&lt;span class="o">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">friend&lt;/span> &lt;span class="k">class&lt;/span> &lt;span class="nc">BasePiece&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">Bishop&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">bool&lt;/span> &lt;span class="nf">IsValidBasicMove_&lt;/span>&lt;span class="p">(...)&lt;/span> &lt;span class="k">const&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">...&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h4 id="piece-variants">Piece Variants&lt;/h4>
+&lt;p>Pieces are represented using std::variant:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="n">Piece&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">variant&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">EmptyPiece&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">Bishop&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">King&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">Knight&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">Pawn&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">Queen&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">Rook&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="n">Pieces&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">vector&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">vector&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">Piece&lt;/span>&lt;span class="o">&amp;gt;&amp;gt;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="n">PiecesReference&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">vector&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">reference_wrapper&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="k">const&lt;/span> &lt;span class="n">Piece&lt;/span>&lt;span class="o">&amp;gt;&amp;gt;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h4 id="square-class">Square Class&lt;/h4>
+&lt;p>The Square class processes moves and manages the state of the pieces:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="k">class&lt;/span> &lt;span class="nc">Square&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">public&lt;/span>&lt;span class="o">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">...&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">PiecesReference&lt;/span> &lt;span class="n">GetPieceOfTypeAndColor&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">const&lt;/span> &lt;span class="n">PieceType&lt;/span> &lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">pieceType&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="k">const&lt;/span> &lt;span class="n">Color&lt;/span> &lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">color&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="p">...)&lt;/span> &lt;span class="k">const&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">PiecesReference&lt;/span> &lt;span class="n">subPieces&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">...&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">subPieces&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">void&lt;/span> &lt;span class="nf">ProcessBasicMove&lt;/span>&lt;span class="p">(...);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">private&lt;/span>&lt;span class="o">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">...&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Pieces&lt;/span> &lt;span class="n">pieces_&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">private&lt;/span>&lt;span class="o">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">void&lt;/span> &lt;span class="n">ValidateMove&lt;/span>&lt;span class="p">(...);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">bool&lt;/span> &lt;span class="nf">VerifyIfKingBeingCheck&lt;/span>&lt;span class="p">(...);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">Square&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">ProcessBasicMove&lt;/span>&lt;span class="p">(...)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">...&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Get pieces of a specific type (Pawn) and color (White)
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">const&lt;/span> &lt;span class="n">PiecesReference&lt;/span> &lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">subPieces&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">GetPieceOfTypeAndColor&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">PieceType&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">Pawn&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">Color&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">White&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="p">...);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">bool&lt;/span> &lt;span class="n">isValid&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">false&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Iterate through the pieces to check if any can perform a valid basic move
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="k">auto&lt;/span> &lt;span class="o">&amp;amp;&lt;/span>&lt;span class="nl">it&lt;/span> &lt;span class="p">:&lt;/span> &lt;span class="n">subPieces&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">visit&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">[&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="p">](&lt;/span>&lt;span class="k">auto&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span>&lt;span class="n">piece&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">isValid&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">piece&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IsValidBasicMove&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ValidateMove&lt;/span>&lt;span class="p">(...);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">it&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">get&lt;/span>&lt;span class="p">());&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">isValid&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">break&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">...&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h4 id="polymorphism-without-vtables">Polymorphism without vtables&lt;/h4>
+&lt;ul>
+&lt;li>
+&lt;p>std::visit is used to handle the different possible types of pieces in a polymorphic manner:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>std::visit&lt;/code> is a utility function in C++17 that allows you to apply a callable (like a lambda function) to the value contained within a &lt;code>std::variant&lt;/code>. This is particularly useful for handling different types that might be stored in the variant, providing a form of polymorphism.&lt;/li>
+&lt;li>&lt;code>subPieces&lt;/code> is a collection of &lt;code>std::variant&lt;/code>, which can hold different types of pieces. This design allows for storing multiple types in a single collection while retaining type safety.&lt;/li>
+&lt;li>By using &lt;code>std::visit&lt;/code>, we can invoke methods on the pieces contained in the variant without needing to know the specific type of each piece at compile time. The lambda function inside &lt;code>std::visit&lt;/code> will be called with the actual type held by the variant.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Using &lt;code>std::visit&lt;/code> in conjunction with &lt;code>std::variant&lt;/code> allows you to achieve polymorphic behavior without traditional inheritance, enabling you to handle multiple piece types in a type-safe manner.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>This project requires:&lt;/p>
+&lt;ul>
+&lt;li>CMake 3.22&lt;/li>
+&lt;li>GCC 12.1 and C++20 standard&lt;/li>
+&lt;li>Ubuntu 23.10 or the Docker image iainttho/ubuntu:23.10.02 based on Ubuntu 23.10.&lt;/li>
+&lt;/ul>
+&lt;h3 id="pros-and-cons">Pros and Cons&lt;/h3>
+&lt;h4 id="pros">Pros&lt;/h4>
+&lt;ul>
+&lt;li>Type Safety: Ensures type-safe operations within variant.&lt;/li>
+&lt;li>Polymorphic Behavior: Enables runtime polymorphism without vtables.&lt;/li>
+&lt;li>Efficiency: Eliminates overhead from virtual function calls and pointer indirection typically associated with traditional inheritance models.&lt;/li>
+&lt;li>Flexibility: Supports adding new types without interface changes.&lt;/li>
+&lt;/ul>
+&lt;h4 id="cons">Cons&lt;/h4>
+&lt;ul>
+&lt;li>Compile-Time Knowledge: Requires knowing all variant types at compile time.&lt;/li>
+&lt;li>Error Handling Complexity: Handling unexpected types can be complex.&lt;/li>
+&lt;li>Debugging Complexity: Debugging interactions between variants and lambda functions can be intricate.&lt;/li>
+&lt;li>Memory Usage: Variants may consume more memory if objects stored have significantly different sizes, leading to potential memory fragmentation and inefficiency.&lt;/li>
+&lt;/ul>
+&lt;h3 id="improvements">Improvements&lt;/h3>
+&lt;ul>
+&lt;li>Add Iterative mode&lt;/li>
+&lt;li>Support Forward-Backward interaction&lt;/li>
+&lt;li>Overload piece swap&lt;/li>
+&lt;/ul>
+&lt;p>For more insights, refer to the following resources:&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://youtu.be/xpomlTd41hg?si=1R4RAHh1p1Effef5" target="_blank" rel="noopener"
+>A Journey Into Non-Virtual Polymorphism in C++ - Rudyard Merriam - CppCon 2023&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://gist.github.com/olibre/3d0774df0f7a16e2da10fae2b2f26c4f" target="_blank" rel="noopener"
+>C++ : Polymorphic inheritance without vtable&lt;/a>&lt;/li>
+&lt;/ul></description></item></channel></rss>

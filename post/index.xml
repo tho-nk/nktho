@@ -65,7 +65,7 @@
 &lt;li>&lt;a class="link" href="#concrete-piece-classes" >Concrete Piece Classes&lt;/a>&lt;/li>
 &lt;li>&lt;a class="link" href="#piece-variants" >Piece Variants&lt;/a>&lt;/li>
 &lt;li>&lt;a class="link" href="#square-class" >Square Class&lt;/a>&lt;/li>
-&lt;li>&lt;a class="link" href="#polymorphism-without-vtables" >Polymorphism without vtables:&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="#polymorphism-without-vtables" >Polymorphism without vtables&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>&lt;a class="link" href="#pros-and-cons" >Pros and Cons&lt;/a>
@@ -300,7 +300,7 @@
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;h4 id="polymorphism-without-vtables">Polymorphism without vtables:&lt;/h4>
+&lt;/div>&lt;h4 id="polymorphism-without-vtables">Polymorphism without vtables&lt;/h4>
 &lt;ul>
 &lt;li>
 &lt;p>std::visit is used to handle the different possible types of pieces in a polymorphic manner:&lt;/p>
